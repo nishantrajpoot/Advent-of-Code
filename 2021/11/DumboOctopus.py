@@ -24,80 +24,7 @@ def illuminate_octopus(matrix, x, y):
     return matrix, arr
 
 
-def neighbour_illuminate(matrix, flash_index, i, j, x, y):
-    # condition when either of these become zero
-    neighbour_flash = []
-    # UL
-    if i > 0 and j > 0 and [i - 1, j - 1] not in flash_index:
-        num = matrix[i - 1][j - 1] + 1
-        if num < 10:
-            matrix[i - 1][j - 1] = num
-        else:
-            matrix[i - 1][j - 1] = 0
-            neighbour_flash.append([i - 1, j - 1])
-
-    # U
-    if i > 0 and [i - 1, j] not in flash_index:
-        num = matrix[i - 1][j] + 1
-        if num < 10:
-            matrix[i - 1][j] = num
-        else:
-            matrix[i - 1][j] = 0
-            neighbour_flash.append([i - 1, j])
-    # UR
-    if i > 0 and j < y - 1 and [i - 1, j + 1] not in flash_index:
-        num = matrix[i - 1][j + 1] + 1
-        if num < 10:
-            matrix[i - 1][j + 1] = num
-        else:
-            matrix[i - 1][j + 1] = 0
-            neighbour_flash.append([i - 1, j + 1])
-    # L
-    if j > 0 and [i, j - 1] not in flash_index:
-        num = matrix[i][j - 1] + 1
-        if num < 10:
-            matrix[i][j - 1] = num
-        else:
-            matrix[i][j - 1] = 0
-            neighbour_flash.append([i, j - 1])
-    # R
-    if j < y - 1 and [i, j + 1] not in flash_index:
-        num = matrix[i][j + 1] + 1
-        if num < 10:
-            matrix[i][j + 1] = num
-        else:
-            matrix[i][j + 1] = 0
-            neighbour_flash.append([i, j + 1])
-
-    # BL
-    if i < x - 1 and j > 0 and [i + 1, j - 1] not in flash_index:
-        num = matrix[i + 1][j - 1] + 1
-        if num < 10:
-            matrix[i + 1][j - 1] = num
-        else:
-            matrix[i + 1][j - 1] = 0
-            neighbour_flash.append([i + 1, j - 1])
-    # B
-    if i < x - 1 and [i + 1, j] not in flash_index:
-        num = matrix[i + 1][j] + 1
-        if num < 10:
-            matrix[i + 1][j] = num
-        else:
-            matrix[i + 1][j] = 0
-            neighbour_flash.append([i + 1, j])
-    # BR
-    if i < x - 1 and j < y - 1 and [i + 1, j + 1] not in flash_index:
-        num = matrix[i + 1][j + 1] + 1
-        if num < 10:
-            matrix[i + 1][j + 1] = num
-        else:
-            matrix[i + 1][j + 1] = 0
-            neighbour_flash.append([i + 1, j + 1])
-
-    return matrix, neighbour_flash
-
-
-def neighbour_illuminate_alt(matrix, arr, neighbour_flash, x, y):
+def neighbour_illuminate(matrix, arr, neighbour_flash, x, y):
     # break condition
     if not neighbour_flash:
         return matrix, arr
@@ -176,7 +103,7 @@ def neighbour_illuminate_alt(matrix, arr, neighbour_flash, x, y):
     for i in flash:
         arr.append(i)
 
-    return neighbour_illuminate_alt(matrix, arr, flash, x, y)
+    return neighbour_illuminate(matrix, arr, flash, x, y)
 
 
 def octopus_blink(matrix, count: int):
@@ -193,7 +120,7 @@ def octopus_blink(matrix, count: int):
         matrix, arr = illuminate_octopus(matrix, x, y)
 
         # recursive function to get the neighbor illumination
-        matrix, arr = neighbour_illuminate_alt(matrix, arr, arr, x, y)
+        matrix, arr = neighbour_illuminate(matrix, arr, arr, x, y)
 
     print(matrix)
 
